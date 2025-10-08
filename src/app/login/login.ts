@@ -64,7 +64,17 @@ export class Login {
       this.validatePassword();
 
       if (this.usernameValidation.test(this.username) && this.passwordValidation.test(this.password)) {
-        alert(`Login successful!\nUsername: ${this.username}\nPassword: ${this.password}`);
+        const userData = {
+          username: this.username,
+          password: this.password
+        };
+
+        // Save the object as a string in localStorage
+        localStorage.setItem('user', JSON.stringify(userData));
+
+        //    localStorage.setItem('username', this.username);
+        //     localStorage.setItem('password', this.password); 
+        // alert(`Login successful!\nUsername: ${this.username}\nPassword: ${this.password}`);
         
         // navigation 
         this.router.navigate(['/profileinformation']);
