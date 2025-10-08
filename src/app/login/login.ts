@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-login',
   imports: [FormsModule, CommonModule],
+  // standalone: false,
   templateUrl: './login.html',
   styleUrls: ['./login.css']
 })
@@ -66,7 +67,7 @@ export class Login {
         alert(`Login successful!\nUsername: ${this.username}\nPassword: ${this.password}`);
         
         // navigation 
-        this.router.navigate(['/userinformation']);
+        this.router.navigate(['/profileinformation']);
       } else {
         alert('Please enter valid username and password!');
       }

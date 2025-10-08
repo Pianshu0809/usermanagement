@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+</head>
+
+<body>
+    <div class="container mt-5">
+        <h2 class="mb-4 text-center">Personal Information</h2>
+
+        <form [formGroup]="profileForm" class="row g-3" (ngSubmit)="onSubmit()">
+            <div class="col-md-6">
+                <label for="txtfirstname" class="form-label">First Name</label>
+                <input type="text" id="txtfirstname" class="form-control" formControlName="firstName" />
+            </div>
+
+            <div class="col-md-6">
+                <label for="txtlastname" class="form-label">Last Name</label>
+                <input type="text" id="txtlastname" class="form-control" formControlName="lastName" />
+            </div>
+
+            <div class="col-md-6" >
+                <label for="txtemail" class="form-label">Email</label>
+                <input type="email" id="txtemail" class="form-control" formControlName="email" />
+            </div>
+
+
+            <div class="col-md-6">
+                <label for="txtphone" class="form-label">Phone</label>
+                <input type="phone" id="txtphone" class="form-control" formControlName="phone" maxlength="10" />
+            </div>
+
+            <div class="col-6">
+                <label for="userimage" class="form-label">Upload User Image</label>
+                <input type="file" class="form-control" id="userimage" accept="image/*" formControlName="userImage" (change)="onFileSelected($event)">
+            </div>
+
+            <div class="col-12 mt-3">
+                <img *ngIf="previewUrl" [src]="previewUrl" alt="Preview" style="max-width:200px; border-radius:8px;">
+            </div>
+
+
+            <div formGroupName="address" class="row g-3">
+                <div class="col-md-6">
+                    <label for="txtstreet" class="form-label">Street</label>
+                    <input type="text" id="txtstreet" class="form-control" formControlName="street" />
+                </div>
+
+                <div class="col-md-6">
+                    <label for="txtcity" class="form-label">city</label>
+                    <input type="text" id="txtcity" class="form-control" formControlName="city" />
+                </div>
+
+                <div class="col-md-6">
+                    <label for="txtstate" class="form-label">State</label>
+                    <input type="text" id="txtstate" class="form-control" formControlName="state" />
+                </div>
+
+                <div class="col-md-6">
+                    <label for="txtzip" class="form-label">Zip</label>
+                    <input type="phone" id="txtzip" class="form-control" formControlName="zip" maxlength="6" />
+                </div>
+            </div>
+
+            <div class="col-12 text-center">
+                <button type="submit" class="btn btn-primary" [disabled]="!profileForm.valid" class=" btn btn-primary w-100">Save</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- // to show all users -->
+    <!-- <div class="mt-5" *ngIf="users.length > 0">
+        <h4>Saved Users</h4>
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>User Image</th>
+                <th>Street</th>
+                <th>City</th>
+                <th>State</th>
+                <th>Zip</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr *ngFor="let user of users; index as i">
+                <td>{{ i + 1 }}</td>
+                <td>{{ user.firstName }}</td>
+                <td>{{ user.lastName }}</td>
+                <td>{{ user.email }}</td>
+                <td>{{ user.phone }}</td>
+                <td>
+                <img
+                    *ngIf="user.userImage"
+                    [src]="user.userImage"
+                    alt="User Image"
+                    style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover;"
+                />
+                </td>
+                <td>{{ user.street }}</td>
+                <td>{{ user.city }}</td>
+                <td>{{ user.state }}</td>
+                <td>{{ user.zip }}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div> -->
+
+</body>
+
+</html>

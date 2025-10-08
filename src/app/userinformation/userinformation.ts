@@ -19,6 +19,13 @@ export class Userinformation {
   city: string = '';
   state: string = '';
   zip: string = '';
+  
+  // event handling
+  fname: string = '';
+  lname: string = '';
+
+  // local reference
+  info: string = '';
 
   firstnamevalidation= /^[A-Za-z\s-]{1,}$/;;
   lastnamevalidation = /^[A-Za-z]{1,}$/;
@@ -135,7 +142,7 @@ iszipValid: boolean = false;
       }   
     }
     
-    previewUrl: string | ArrayBuffer | null = null;
+  previewUrl: string | ArrayBuffer | null = null;
 
   onFileSelected(event: Event): void {
   const input = event.target as HTMLInputElement;
@@ -152,7 +159,7 @@ iszipValid: boolean = false;
 
   constructor(private Userinfomation: Userinfomation) {}
 
-   onSave(){
+   onSave(emailvalue:string, phonevalue: string){
       if (
     !this.fn || !this.lastname || !this.email || !this.phone ||
     !this.address || !this.city || !this.state || !this.zip || !this.previewUrl
@@ -183,7 +190,13 @@ iszipValid: boolean = false;
     });
 
     const data = this.Userinfomation.getUser();
-     alert(`FirstName: ${data.firstname}\nlastname: ${data.lastname}\nEmail: ${data.email}\nPhone: ${data.phone}\nAddress: ${data.address}\nCity: ${data.city}\nState: ${data.state}\nZip: ${data.zip}`);
+    //  alert(`FirstName: ${data.firstname}\nlastname: ${data.lastname}\nEmail: ${data.email}\nPhone: ${data.phone}\nAddress: ${data.address}\nCity: ${data.city}\nState: ${data.state}\nZip: ${data.zip}`);
+
+
+     //event Handling
+     this.fname= data.firstname 
+     this.lname = data.lastname
+     this.info= emailvalue + ' '+phonevalue;
    }
 
 }
