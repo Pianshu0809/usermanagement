@@ -1,0 +1,108 @@
+<button (click)="getbacktouserdata()"> <-Back </button>
+  <div class="container mt-5" *ngIf="userdetail">
+    <h2 class="mb-4 text-center">User Details</h2>
+    <div class="row g-3">
+      <div class="col-md-4">
+        <p><b>First Name:</b> {{ userdetail?.firstName }}</p>
+      </div>
+      <div class="col-md-4">
+        <p><b>Last Name:</b> {{ userdetail?.lastName }}</p>
+      </div>
+      <div class="col-md-4">
+        <p><b>Maiden Name:</b> {{ userdetail?.maidenName }}</p>
+      </div>
+      <div class="col-md-4">
+        <p><b>Age:</b> {{ userdetail?.age }}</p>
+      </div>
+      <div class="col-md-4">
+        <p><b>Gender:</b> {{ userdetail?.gender }}</p>
+      </div>
+      <div class="col-md-4">
+        <p><b>Email:</b> {{ userdetail?.email }}</p>
+      </div>
+      <div class="col-md-4">
+        <p><b>Phone:</b> {{ userdetail?.phone }}</p>
+      </div>
+      <div class="col-md-4">
+        <p><b>Username:</b> {{ userdetail?.username }}</p>
+      </div>
+      <div class="col-md-4">
+        <p><b>Password:</b> {{ userdetail?.password }}</p>
+      </div>
+      <div class="col-md-4">
+        <p><b>Birth Date:</b> {{ userdetail?.birthDate }}</p>
+      </div>
+      <div class="col-md-4">
+        <p><b>Image:</b> {{ userdetail?.image }}</p>
+      </div>
+      <div class="col-md-4">
+        <p><b>Blood Group:</b> {{ userdetail?.bloodGroup }}</p>
+      </div>
+      <div class="col-md-4">
+        <p><b>Height:</b> {{ userdetail?.height }}</p>
+      </div>
+      <div class="col-md-4">
+        <p><b>Weight:</b> {{ userdetail?.weight }}</p>
+      </div>
+
+
+   
+    </div>
+    <h2 class="mb-4 text-center">Face</h2>
+    <div class="row g-3">
+      <div class="col-md-4">
+        <p><b>Eye Color:</b> {{ userdetail?.eyeColor }}</p>
+      </div>
+      <div class="col-md-4">
+        <p><b>Hair Color:</b> {{ userdetail?.hair?.color }}</p>
+      </div>
+      <div class="col-md-4">
+        <p><b>Hair Type:</b> {{ userdetail?.hair?.type }}</p>
+      </div>
+    </div>
+    <h2 class="mb-4 text-center">Address</h2>
+    <div class="row g-3">
+         <div class="col-md-4">
+        <p><b>IP:</b> {{ userdetail?.ip }}</p>
+      </div>
+      <div class="col-md-4">
+        <p><b>Address:</b> {{ userdetail?.address?.address }}</p>
+      </div>
+      <div class="col-md-4">
+        <p><b>City:</b> {{ userdetail?.address?.city }}</p>
+      </div>
+     <div class="col-md-4">
+        <p><b>State:</b> {{ userdetail?.address?.state }}</p>
+      </div>
+      <div class="col-md-4">
+        <p><b>State Code:</b> {{ userdetail?.address?.stateCode }}</p>
+      </div>
+      <div class="col-md-4">
+        <p><b>Postal Code:</b> {{ userdetail?.address?.postalCode }}</p>
+      </div>
+      <div class="col-md-4">
+        <p><b>Latitude:</b> {{ userdetail?.address?.coordinates?.lat }}</p>
+      </div>
+      <div class="col-md-4">
+        <p><b>Longitude:</b> {{ userdetail?.address?.coordinates?.lng }}</p>
+      </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
