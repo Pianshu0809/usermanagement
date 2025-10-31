@@ -1,17 +1,4 @@
-/* .navbar {
-  background-color: #217fde;
-  padding: 10px 20px;
-  height: 50px;
-}
 
-.navbar ul{
-  list-style: none;
-  display: flex;
-  gap: 15px;
+.nav-link{
+  color: black
 }
-
-.navbar ul li a {
-  text-decoration: none;
-  color: white;
-  font-weight: 500;
-} */

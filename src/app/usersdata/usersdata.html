@@ -13,7 +13,7 @@
 
 
 <div>
-<table class="table table-bordered" *ngIf="paginationUsers.length > 0; else loading">
+<table class="table table-bordered">
   <thead>
     <tr>
       <th>Id</th>
@@ -27,6 +27,7 @@
       <th>Username</th>
       <th>Password</th>
       <th>Birthdate</th>
+      <th>Action</th>
     </tr>
   </thead>
   <tbody>
@@ -42,13 +43,11 @@
       <td>{{ user.username }}</td>
       <td>{{ user.password }}</td>
       <td>{{ user.birthDate }}</td>
+      <td><button mat-raised-button (click)="openPopup(user.id); $event.stopPropagation()">view</button></td>
     </tr>
   </tbody>
 </table>
 
-<ng-template #loading>
-  <p>Loading users...</p>
-</ng-template>
 
 <app-paginationuser
   [totalItems]="totalItems"

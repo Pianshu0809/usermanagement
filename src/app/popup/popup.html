@@ -1,0 +1,300 @@
+<h2 mat-dialog-title>Form Details</h2>
+
+<mat-dialog-content>
+    <form [formGroup]="formdata" class="row g-3" (ngSubmit)="onSubmit()">
+
+        <!-- First Name -->
+        <div class="col-md-4">
+            <label class="form-label">First Name</label>
+            <input type="text" class="form-control" formControlName="fn">
+            <div *ngIf="formdata.get('fn')?.touched && formdata.get('fn')?.invalid" class="text-danger">
+                <small *ngIf="formdata.get('fn')?.errors?.['required']">First name is required</small>
+                <small *ngIf="formdata.get('fn')?.errors?.['pattern']">Only letters allowed</small>
+            </div>
+        </div>
+
+        <!-- Last Name -->
+        <div class="col-md-4">
+            <label class="form-label">Last Name</label>
+            <input type="text" class="form-control" formControlName="ln">
+            <div *ngIf="formdata.get('ln')?.touched && formdata.get('ln')?.invalid" class="text-danger">
+                <small *ngIf="formdata.get('ln')?.errors?.['required']">Last name is required</small>
+                <small *ngIf="formdata.get('ln')?.errors?.['pattern']">Only letters allowed</small>
+            </div>
+        </div>
+
+        <!-- Maiden Name -->
+        <div class="col-md-4">
+            <label class="form-label">Maiden Name</label>
+            <input type="text" class="form-control" formControlName="mn">
+            <div *ngIf="formdata.get('mn')?.touched && formdata.get('mn')?.invalid" class="text-danger">
+                <small *ngIf="formdata.get('mn')?.errors?.['pattern']">Only letters allowed</small>
+            </div>
+        </div>
+
+        <!-- Age -->
+        <div class="col-md-4">
+            <label class="form-label">Age</label>
+            <input type="text" class="form-control" formControlName="age">
+            <div *ngIf="formdata.get('age')?.touched && formdata.get('age')?.invalid" class="text-danger">
+                <small *ngIf="formdata.get('age')?.errors?.['required']">Age is required</small>
+                <small *ngIf="formdata.get('age')?.errors?.['pattern']">Enter numbers only</small>
+                <small *ngIf="formdata.get('age')?.errors?.['min']">Minimum age is 1</small>
+                <small *ngIf="formdata.get('age')?.errors?.['max']">Maximum age is 120</small>
+            </div>
+        </div>
+
+        <!-- Gender -->
+        <div class="col-md-4">
+            <label class="form-label d-block">Gender</label>
+            <div class="d-flex align-items-center gap-3">
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" value="male" formControlName="gender" id="male">
+                    <label class="form-check-label" for="male">Male</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" value="female" formControlName="gender" id="female">
+                    <label class="form-check-label" for="female">Female</label>
+                </div>
+            </div>
+            <div *ngIf="formdata.get('gender')?.touched && formdata.get('gender')?.invalid" class="text-danger">
+                <small>Gender is required</small>
+            </div>
+        </div>
+
+        <!-- Email -->
+        <div class="col-md-4">
+            <label class="form-label">Email</label>
+            <input type="email" class="form-control" formControlName="email">
+            <div *ngIf="formdata.get('email')?.touched && formdata.get('email')?.invalid" class="text-danger">
+                <small *ngIf="formdata.get('email')?.errors?.['required']">Email is required</small>
+                <small *ngIf="formdata.get('email')?.errors?.['email']">Enter a valid email</small>
+            </div>
+        </div>
+
+        <!-- Phone -->
+        <div class="col-md-4">
+            <label class="form-label">Phone</label>
+            <input type="tel" class="form-control" formControlName="phone">
+            <div *ngIf="formdata.get('phone')?.touched && formdata.get('phone')?.invalid" class="text-danger">
+                <small *ngIf="formdata.get('phone')?.errors?.['required']">Phone number is required</small>
+                <small *ngIf="formdata.get('phone')?.errors?.['pattern']">Must be 10 digits</small>
+            </div>
+        </div>
+
+        <!-- Username -->
+        <div class="col-md-4">
+            <label class="form-label">Username</label>
+            <input type="text" class="form-control" formControlName="username">
+            <div *ngIf="formdata.get('username')?.touched && formdata.get('username')?.invalid" class="text-danger">
+                <small *ngIf="formdata.get('username')?.errors?.['required']">Username is required</small>
+                <small *ngIf="formdata.get('username')?.errors?.['pattern']">3–15 characters (letters, numbers,
+                    _)</small>
+            </div>
+        </div>
+
+        <!-- Password -->
+        <div class="col-md-4">
+            <label class="form-label">Password</label>
+            <input type="password" class="form-control" formControlName="password">
+            <div *ngIf="formdata.get('password')?.touched && formdata.get('password')?.invalid" class="text-danger">
+                <small *ngIf="formdata.get('password')?.errors?.['required']">Password is required</small>
+                <small *ngIf="formdata.get('password')?.errors?.['pattern']">
+                    Must contain uppercase, lowercase, number, and special char
+                </small>
+            </div>
+        </div>
+
+        <!-- Birth Date section-->
+        <div class="col-md-4">
+            <label class="form-label">Birth Date</label>
+            <input type="date" class="form-control" formControlName="birthdate">
+            <div *ngIf="formdata.get('birthdate')?.touched && formdata.get('birthdate')?.invalid" class="text-danger">
+                <small>Birth date is required</small>
+            </div>
+        </div>
+
+        <!-- User Image (file upload)  section -->
+        <div class="col-md-4">
+            <label class="form-label">Upload User Image</label>
+            <input type="file" accept="image/*" class="form-control" (change)="onImageSelected($event)">
+            <div *ngIf="formdata.get('userimage')?.touched && formdata.get('userimage')?.invalid" class="text-danger">
+                <small>User image is required</small>
+            </div>
+        </div>
+
+        <!-- Blood Group section-->
+        <div class="col-md-4">
+            <label class="form-label">Blood Group</label>
+            <select class="form-select" formControlName="bloodgroup">
+                <option value="">Select</option>
+                <option *ngFor="let group of ['A+','A-','B+','B-','AB+','AB-','O+','O-']" [value]="group">
+                    {{ group }}
+                </option>
+            </select>
+            <div *ngIf="formdata.get('bloodgroup')?.touched && formdata.get('bloodgroup')?.invalid" class="text-danger">
+                <small>Valid blood group required</small>
+            </div>
+        </div>
+
+        <!-- Height section-->
+        <div class="col-md-4">
+            <label class="form-label">Height</label>
+            <input type="text" class="form-control" formControlName="height">
+            <div *ngIf="formdata.get('height')?.touched && formdata.get('height')?.invalid" class="text-danger">
+                <small>Enter valid height (numbers only)</small>
+            </div>
+        </div>
+
+        <!-- Weight section -->
+        <div class="col-md-4">
+            <label class="form-label">Weight</label>
+            <input type="text" class="form-control" formControlName="weight">
+            <div *ngIf="formdata.get('weight')?.touched && formdata.get('weight')?.invalid" class="text-danger">
+                <small>Enter valid weight (numbers only)</small>
+            </div>
+        </div>
+
+        <!-- Eye Color section-->
+        <div class="col-md-4">
+            <label class="form-label">Eye Color</label>
+            <input type="text" class="form-control" formControlName="eyecolor">
+            <div *ngIf="formdata.get('eyecolor')?.touched && formdata.get('eyecolor')?.invalid" class="text-danger">
+                <small>Enter valid eye color</small>
+            </div>
+        </div>
+
+        <!-- Hair Section -->
+        <div formGroupName="hair" class="row g-3">
+            <div class="col-md-4">
+                <label class="form-label">Hair Color</label>
+                <input type="text" class="form-control" formControlName="color" />
+                <div *ngIf="formdata.get('hair.color')?.touched && formdata.get('hair.color')?.invalid"
+                    class="text-danger">
+                    <small *ngIf="formdata.get('hair.color')?.errors?.['required']">Hair color is required</small>
+                    <small *ngIf="formdata.get('hair.color')?.errors?.['pattern']">Only letters allowed</small>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <label class="form-label">Hair Type</label>
+                <input type="text" class="form-control" formControlName="type" />
+                <div *ngIf="formdata.get('hair.type')?.touched && formdata.get('hair.type')?.invalid"
+                    class="text-danger">
+                    <small *ngIf="formdata.get('hair.type')?.errors?.['required']">Hair type is required</small>
+                    <small *ngIf="formdata.get('hair.type')?.errors?.['pattern']">Only letters allowed</small>
+                </div>
+            </div>
+        </div>
+
+        <!-- IP Address -->
+        <div class="col-md-4">
+            <label class="form-label">IP Address</label>
+            <input type="text" class="form-control" formControlName="ipaddress" />
+            <div *ngIf="formdata.get('ipaddress')?.touched && formdata.get('ipaddress')?.invalid" class="text-danger">
+                <small *ngIf="formdata.get('ipaddress')?.errors?.['required']">IP Address is required</small>
+                <small *ngIf="formdata.get('ipaddress')?.errors?.['pattern']">Invalid IP format (e.g.,
+                    192.168.0.1)</small>
+            </div>
+        </div>
+
+        <!-- Address Section -->
+        <div formGroupName="address" class="row g-3">
+            <div class="col-md-4">
+                <label class="form-label">House / Street</label>
+                <input type="text" class="form-control" formControlName="housenumber" />
+                <div *ngIf="formdata.get('address.housenumber')?.touched && formdata.get('address.housenumber')?.invalid"
+                    class="text-danger">
+                    <small>House number is required</small>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <label class="form-label">City</label>
+                <input type="text" class="form-control" formControlName="city" />
+                <div *ngIf="formdata.get('address.city')?.touched && formdata.get('address.city')?.invalid"
+                    class="text-danger">
+                    <small *ngIf="formdata.get('address.city')?.errors?.['required']">City is required</small>
+                    <small *ngIf="formdata.get('address.city')?.errors?.['pattern']">Only letters allowed</small>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <label class="form-label">State</label>
+                <input type="text" class="form-control" formControlName="state" />
+                <div *ngIf="formdata.get('address.state')?.touched && formdata.get('address.state')?.invalid"
+                    class="text-danger">
+                    <small *ngIf="formdata.get('address.state')?.errors?.['required']">State is required</small>
+                    <small *ngIf="formdata.get('address.state')?.errors?.['pattern']">Only letters allowed</small>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <label class="form-label">State Code</label>
+                <input type="text" class="form-control" formControlName="statecode" />
+                <div *ngIf="formdata.get('address.statecode')?.touched && formdata.get('address.statecode')?.invalid"
+                    class="text-danger">
+                    <small *ngIf="formdata.get('address.statecode')?.errors?.['required']">State code is
+                        required</small>
+                    <small *ngIf="formdata.get('address.statecode')?.errors?.['pattern']">Only 2–3 uppercase letters
+                        allowed</small>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <label class="form-label">Postal Code</label>
+                <input type="text" class="form-control" maxlength="6" formControlName="postalcode" />
+                <div *ngIf="formdata.get('address.postalcode')?.touched && formdata.get('address.postalcode')?.invalid"
+                    class="text-danger">
+                    <small *ngIf="formdata.get('address.postalcode')?.errors?.['required']">Postal code is
+                        required</small>
+                    <small *ngIf="formdata.get('address.postalcode')?.errors?.['pattern']">Must be a 6-digit
+                        number</small>
+                </div>
+            </div>
+
+            <div formGroupName="coordinates" class="row g-3">
+                <div class="col-md-4">
+                    <label class="form-label">Latitude</label>
+                    <input type="text" class="form-control" formControlName="lat" />
+                    <div *ngIf="formdata.get('address.coordinates.lat')?.touched && formdata.get('address.coordinates.lat')?.invalid"
+                        class="text-danger">
+                        <small *ngIf="formdata.get('address.coordinates.lat')?.errors?.['required']">Latitude is
+                            required</small>
+                        <small *ngIf="formdata.get('address.coordinates.lat')?.errors?.['pattern']">Invalid latitude
+                            format</small>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <label class="form-label">Longitude</label>
+                    <input type="text" class="form-control" formControlName="long" />
+                    <div *ngIf="formdata.get('address.coordinates.long')?.touched && formdata.get('address.coordinates.long')?.invalid"
+                        class="text-danger">
+                        <small *ngIf="formdata.get('address.coordinates.long')?.errors?.['required']">Longitude is
+                            required</small>
+                        <small *ngIf="formdata.get('address.coordinates.long')?.errors?.['pattern']">Invalid longitude
+                            format</small>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <label class="form-label">Country</label>
+                <input type="text" class="form-control" formControlName="country" />
+                <div *ngIf="formdata.get('address.country')?.touched && formdata.get('address.country')?.invalid"
+                    class="text-danger">
+                    <small *ngIf="formdata.get('address.country')?.errors?.['required']">Country is required</small>
+                    <small *ngIf="formdata.get('address.country')?.errors?.['pattern']">Only letters allowed</small>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Buttons -->
+        <mat-dialog-actions>
+            <button mat-button mat-dialog-close type="button">Close</button>
+            <button mat-button color="primary" type="submit" [disabled]="formdata.invalid">Save</button>
+        </mat-dialog-actions>
+    </form>
+</mat-dialog-content>

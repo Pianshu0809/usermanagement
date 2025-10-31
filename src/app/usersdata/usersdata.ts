@@ -1,16 +1,18 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { UsersData } from '../service/users-data';
 import { Router } from '@angular/router';
 import { Paginationuser } from '../paginationuser/paginationuser';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+import { Popup } from '../popup/popup';
 
 @Component({
   selector: 'app-usersdata',
-  standalone: true,
-  imports: [CommonModule, Paginationuser, ReactiveFormsModule],
+  imports: [Paginationuser, ReactiveFormsModule,CommonModule],
   templateUrl: './usersdata.html',
-  styleUrls: ['./usersdata.css']
+  styleUrl: './usersdata.css',
+
 })
 export class Usersdata implements OnInit {
   users: any[] = [];
@@ -25,21 +27,26 @@ export class Usersdata implements OnInit {
   itemsPerPage = 5;
   totalItems = 0;
 
-  constructor(private userservice: UsersData, private router: Router) { }
+  constructor(private userservice: UsersData, 
+    private router: Router, 
+    private cdref:ChangeDetectorRef,
+    public dialog: MatDialog
+  ) {}
+
 
   ngOnInit() {
-    this.fetchData();
+    this.fetchData(); 
   }
 
   fetchData() {
-     alert(1);
     this.userservice.getUser().subscribe({
       next: (response: any) => {
         this.users = response.users;
+        console.log(this.users);
         this.filteredUsers = this.users;
         this.totalItems = this.filteredUsers.length;
         this.updatePaginationUsers();
-        alert(2);
+        this.cdref.detectChanges();
       },
       error: (error) => {
         console.error('Error fetching data:', error);
@@ -48,7 +55,6 @@ export class Usersdata implements OnInit {
   }
 
   updatePaginationUsers() {
-    alert(3);
     const startIndex = (this.currentPage - 1) * this.itemsPerPage;
     const endIndex = startIndex + this.itemsPerPage;
     this.paginationUsers = this.filteredUsers.slice(startIndex, endIndex);
@@ -100,5 +106,11 @@ export class Usersdata implements OnInit {
 
   viewDetails(id: number) {
     this.router.navigate(['/userdetails', id]);
+  }
+  
+  openPopup(id: number){
+    const dialogRef = this.dialog.open(Popup,{ data:{firstname:'', lastname:'', middlename:''}});
+
+    dialogRef.afterClosed().subscribe((result)=>{console.log("this is my resutl: ", result)})
   }
 }
