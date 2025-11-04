@@ -8,15 +8,16 @@ import { Observable } from 'rxjs';
 })
 export class UsersData {
 
- private url="https://dummyjson.com/users"
+ private url = "https://dummyjson.com/users?limit=208&skip=0";
+
 
  constructor(private http:HttpClient){}
 
  getUser(): Observable<any>{
   return this.http.get<any>(this.url)
  }
-  getUserById(id: number): Observable<any> {
-    return this.http.get(`${this.url}/${id}`);
+ 
+ getUserById(id: number): Observable<any>{
+    return this.http.get<any>(`https://dummyjson.com/users/${id}`);
   }
-  
 }

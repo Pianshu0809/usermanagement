@@ -4,11 +4,15 @@
 
 
 <form [formGroup]="searchForm" (ngSubmit)="onSearch()">
-  <div class="input-group mb-3">
+  <div class="input-group mb-3 ">
     <input type="text" formControlName="searchQuery" placeholder="Search..." (input)="onInputChange()"/>
     <button class="btn btn-primary">Search</button>
+      <button mat-raised-button class="btn btn-secondary ms-2" (click)="openPopup(); $event.stopPropagation()">create new user</button>
   </div>
+
 </form>
+
+
 
 
 
@@ -27,11 +31,10 @@
       <th>Username</th>
       <th>Password</th>
       <th>Birthdate</th>
-      <th>Action</th>
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let user of paginationUsers" (click)="viewDetails(user.id)">
+    <tr *ngFor="let user of paginationUsers" (click)="viewDetails(user)">
       <td>{{ user.id }}</td>
       <td>{{ user.firstName }}</td>
       <td>{{ user.lastName }}</td>
@@ -43,7 +46,6 @@
       <td>{{ user.username }}</td>
       <td>{{ user.password }}</td>
       <td>{{ user.birthDate }}</td>
-      <td><button mat-raised-button (click)="openPopup(user.id); $event.stopPropagation()">view</button></td>
     </tr>
   </tbody>
 </table>

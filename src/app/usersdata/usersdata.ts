@@ -19,18 +19,20 @@ export class Usersdata implements OnInit {
   filteredUsers: any[] = [];
   paginationUsers: any[] = [];
 
+  newusers: any[] = [];
+
   searchForm = new FormGroup({
     searchQuery: new FormControl('')
   });
 
   currentPage = 1;
-  itemsPerPage = 5;
+  itemsPerPage = 25;
   totalItems = 0;
 
   constructor(private userservice: UsersData, 
     private router: Router, 
     private cdref:ChangeDetectorRef,
-    public dialog: MatDialog
+    public dialog: MatDialog,
   ) {}
 
 
@@ -39,20 +41,63 @@ export class Usersdata implements OnInit {
   }
 
   fetchData() {
-    this.userservice.getUser().subscribe({
-      next: (response: any) => {
-        this.users = response.users;
-        console.log(this.users);
-        this.filteredUsers = this.users;
-        this.totalItems = this.filteredUsers.length;
-        this.updatePaginationUsers();
-        this.cdref.detectChanges();
-      },
-      error: (error) => {
-        console.error('Error fetching data:', error);
-      }
-    });
-  }
+  this.userservice.getUser().subscribe({
+    next: (response: any) => {
+      this.users = response.users;
+      this.newusers = JSON.parse(localStorage.getItem('Dummy Users Data') || '[]');
+      const formattedData = this.newusers.map((user: any, index: number) => ({
+        id: this.users.length + index + 1, 
+        firstName: user.fn,
+        lastName: user.ln,
+        maidenName: user.mn || '',
+        age: user.age,
+        gender: user.gender,
+        email: user.email,
+        phone: user.phone,
+        username: user.username,
+        password: user.password,
+        birthDate: user.birthdate,
+        image: user.userimage,
+        bloodGroup: user.bloodgroup,
+        height: user.height,
+        weight: user.weight,
+        eyeColor: user.eyecolor,
+        hair: {
+          color: user.hair?.color,
+          type: user.hair?.type
+        },
+        ip: user.ipaddress,
+        address: {
+          address: user.address?.address,
+          city: user.address?.city, 
+          state: user.address?.state,
+          stateCode: user.address?.statecode,
+          postalCode: user.address?.postalcode, 
+          coordinates: {
+            lat: user.address?.coordinates?.lat,
+            lng: user.address?.coordinates?.lng
+          },
+          country: user.address?.country
+        },
+        source:'local'
+      }));
+
+  
+      this.users = [...this.users, ...formattedData];
+
+      this.filteredUsers = this.users;
+      this.totalItems = this.filteredUsers.length;
+      this.updatePaginationUsers();
+      this.cdref.detectChanges();
+
+      console.log("Merged Users:", this.users);
+    },
+    error: (error) => {
+      console.error('Error fetching data:', error);
+    }
+  });
+}
+
 
   updatePaginationUsers() {
     const startIndex = (this.currentPage - 1) * this.itemsPerPage;
@@ -104,13 +149,26 @@ export class Usersdata implements OnInit {
     this.updatePaginationUsers();
   }
 
-  viewDetails(id: number) {
-    this.router.navigate(['/userdetails', id]);
+  viewDetails(user: any) {
+    if(user.source=== 'api'){
+      this.router.navigate(['/userdetails', user.id]);
+    }else{
+      localStorage.setItem('selectedUser',JSON.stringify(user))
+      this.router.navigate(['/userdetails','local']);
+
+    }
+    
   }
   
-  openPopup(id: number){
-    const dialogRef = this.dialog.open(Popup,{ data:{firstname:'', lastname:'', middlename:''}});
+  openPopup(){
+    const dialogRef = this.dialog.open(Popup);
 
-    dialogRef.afterClosed().subscribe((result)=>{console.log("this is my resutl: ", result)})
+    dialogRef.afterClosed().subscribe((result)=>{
+      console.log("this is my resutl: ", result)
+      if(result){
+        this.fetchData();
+      }
+    })
   }
+
 }

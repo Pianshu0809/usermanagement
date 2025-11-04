@@ -2,14 +2,14 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatDialogModule } from '@angular/material/dialog';
-
+import { MatDialogRef } from '@angular/material/dialog';
 @Component({
   selector: 'app-popup',
   imports: [ReactiveFormsModule, MatDialogModule, CommonModule],
   templateUrl: './popup.html',
   styleUrl: './popup.css'
 })
-export class Popup {
+export class Popup{
   formdata = new FormGroup({
     fn: new FormControl('', [Validators.required, Validators.pattern('^[A-Za-z ]+$')]),
     ln: new FormControl('', [Validators.required, Validators.pattern('^[A-Za-z ]+$')]),
@@ -24,7 +24,7 @@ export class Popup {
       Validators.pattern(/^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%^&*]).{8,}$/)
     ]),
     birthdate: new FormControl('', [Validators.required]),
-    userimage: new FormControl(null, [Validators.required]),
+    userimage: new FormControl<string | null>(null, [Validators.required]),
     bloodgroup: new FormControl('', [Validators.required, Validators.pattern(/^(A|B|AB|O)[+-]$/)]),
     height: new FormControl('', [Validators.required, Validators.pattern(/^[0-9]+(\.[0-9]{1,2})?$/)]),
     weight: new FormControl('', [Validators.required, Validators.pattern(/^[0-9]+(\.[0-9]{1,2})?$/)]),
@@ -35,7 +35,7 @@ export class Popup {
       type: new FormControl('', [Validators.required, Validators.pattern('^[A-Za-z ]+$')])
     }),
 
-     ipaddress: new FormControl('', [
+    ipaddress: new FormControl('', [
       Validators.required,
       Validators.pattern(
         /^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/
@@ -43,7 +43,7 @@ export class Popup {
     ]),
 
     address: new FormGroup({
-      housenumber: new FormControl('', [Validators.required, Validators.pattern(/^[A-Za-z0-9\s,.'-]{3,}$/)]),
+      address: new FormControl('', [Validators.required, Validators.pattern(/^[A-Za-z0-9\s,.'-]{3,}$/)]),
       city: new FormControl('', [Validators.required, Validators.pattern(/^[A-Za-z\s]{2,}$/)]),
       state: new FormControl('', [Validators.required, Validators.pattern(/^[A-Za-z\s]{2,}$/)]),
       statecode: new FormControl('', [Validators.required, Validators.pattern(/^[A-Za-z0-9]{2,}$/)]),
@@ -51,24 +51,41 @@ export class Popup {
 
       coordinates: new FormGroup({
         lat: new FormControl('', [Validators.required, Validators.pattern(/^[-+]?[0-9]*\.?[0-9]+$/)]),
-        long: new FormControl('', [Validators.required, Validators.pattern(/^[-+]?[0-9]*\.?[0-9]+$/)])
+        lng: new FormControl('', [Validators.required, Validators.pattern(/^[-+]?[0-9]*\.?[0-9]+$/)])
       }),
 
       country: new FormControl('', [Validators.required, Validators.pattern(/^[A-Za-z\s]{2,}$/)])
     })
   });
+  constructor(public dialogRef: MatDialogRef<Popup>) { }
 
-  onImageSelected(event: any) {
-    const file = event.target.files[0];
-    if (file) {
-      this.formdata.get('userimage')?.setValue(file);
-    }
+  dummyusers: any[] = [];
+
+onImageSelected(event: any) {
+  const file = event.target.files[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = () => {
+      const base64String = reader.result as string;
+      // store the Base64 string in your form control
+      this.formdata.get('userimage')?.setValue(base64String);
+    };
+    reader.readAsDataURL(file);
   }
+}
+
 
   onSubmit() {
     if (this.formdata.valid) {
       console.log('Form Data:', this.formdata.value);
       alert('Form submitted successfully!');
+
+      const existingData = JSON.parse(localStorage.getItem('Dummy Users Data') || '[]');
+      existingData.push(this.formdata.value);
+      localStorage.setItem('Dummy Users Data', JSON.stringify(existingData));
+      this.dummyusers = existingData;
+      this.dialogRef.close(this.dummyusers);
+
     } else {
       this.formdata.markAllAsTouched();
       alert('Please fill all required fields correctly.');

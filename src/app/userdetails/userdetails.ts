@@ -1,8 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute,Router } from '@angular/router';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { UsersData } from '../service/users-data';
 import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef } from '@angular/core';
 
 @Component({
   selector: 'app-userdetails',
@@ -12,36 +11,39 @@ import { ChangeDetectorRef } from '@angular/core';
   styleUrls: ['./userdetails.css']
 })
 export class Userdetails implements OnInit {
-  
-
   userdetail: any;
 
   constructor(
     private route: ActivatedRoute,
     private userservice: UsersData,
     private cdr: ChangeDetectorRef,
-    private router:Router
+    private router: Router
   ) {}
 
-  ngOnInit(){
+  ngOnInit() {
     this.route.paramMap.subscribe(params => {
-      const userid = Number(params.get('id'));
-      console.log('User ID from route:', userid);
+      const userId = params.get('id');
+      console.log('User ID from route:', userId);
 
-      if (userid) {
-        this.userservice.getUserById(userid).subscribe({
+      if (userId === 'local') {
+        this.userdetail = JSON.parse(localStorage.getItem('selectedUser') || '{}');
+        console.log('Loaded local user details:', this.userdetail);
+        this.cdr.detectChanges();
+      } 
+      else if (userId) {
+        this.userservice.getUserById(Number(userId)).subscribe({
           next: (details) => {
             this.userdetail = details;
-            console.log('User details fetched:', details);
-            this.cdr.detectChanges(); 
+            console.log('Fetched API user details:', details);
+            this.cdr.detectChanges();
           },
-          error: (err) => console.error('Error fetching user details:', err)
+          error: (err) => console.error('Error fetching API user details:', err)
         });
       }
     });
   }
 
-  getbacktouserdata(){
+  getbacktouserdata() {
     this.router.navigate(['/usersdata']);
   }
 }

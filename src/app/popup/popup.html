@@ -75,7 +75,7 @@
         <!-- Phone -->
         <div class="col-md-4">
             <label class="form-label">Phone</label>
-            <input type="tel" class="form-control" formControlName="phone">
+            <input type="tel" class="form-control" formControlName="phone" maxlength="10">
             <div *ngIf="formdata.get('phone')?.touched && formdata.get('phone')?.invalid" class="text-danger">
                 <small *ngIf="formdata.get('phone')?.errors?.['required']">Phone number is required</small>
                 <small *ngIf="formdata.get('phone')?.errors?.['pattern']">Must be 10 digits</small>
@@ -117,7 +117,7 @@
         <!-- User Image (file upload)  section -->
         <div class="col-md-4">
             <label class="form-label">Upload User Image</label>
-            <input type="file" accept="image/*" class="form-control" (change)="onImageSelected($event)">
+            <input type="file" accept="image/*" class="form-control" (change)="onImageSelected($event)" formControlName="userimage">
             <div *ngIf="formdata.get('userimage')?.touched && formdata.get('userimage')?.invalid" class="text-danger">
                 <small>User image is required</small>
             </div>
@@ -202,8 +202,8 @@
         <div formGroupName="address" class="row g-3">
             <div class="col-md-4">
                 <label class="form-label">House / Street</label>
-                <input type="text" class="form-control" formControlName="housenumber" />
-                <div *ngIf="formdata.get('address.housenumber')?.touched && formdata.get('address.housenumber')?.invalid"
+                <input type="text" class="form-control" formControlName="address" />
+                <div *ngIf="formdata.get('address.address')?.touched && formdata.get('address.address')?.invalid"
                     class="text-danger">
                     <small>House number is required</small>
                 </div>
@@ -268,12 +268,12 @@
 
                 <div class="col-md-4">
                     <label class="form-label">Longitude</label>
-                    <input type="text" class="form-control" formControlName="long" />
-                    <div *ngIf="formdata.get('address.coordinates.long')?.touched && formdata.get('address.coordinates.long')?.invalid"
+                    <input type="text" class="form-control" formControlName="lng" />
+                    <div *ngIf="formdata.get('address.coordinates.lng')?.touched && formdata.get('address.coordinates.lng')?.invalid"
                         class="text-danger">
-                        <small *ngIf="formdata.get('address.coordinates.long')?.errors?.['required']">Longitude is
+                        <small *ngIf="formdata.get('address.coordinates.lng')?.errors?.['required']">Longitude is
                             required</small>
-                        <small *ngIf="formdata.get('address.coordinates.long')?.errors?.['pattern']">Invalid longitude
+                        <small *ngIf="formdata.get('address.coordinates.lng')?.errors?.['pattern']">Invalid longitude
                             format</small>
                     </div>
                 </div>
@@ -289,7 +289,6 @@
                 </div>
             </div>
         </div>
-
 
         <!-- Buttons -->
         <mat-dialog-actions>
