@@ -1,87 +1,281 @@
-<!DOCTYPE html>
-<html lang="en">
+<div class="container mt-4">
+  <h2 class="text-center mb-3">Profile Information</h2>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <form [formGroup]="profileForm" (ngSubmit)="onSaveAll()">
+    <div formArrayName="profiles">
+      <div *ngFor="let group of profileFormGroups; let i = index"
+           [formGroup]="group"
+           class="card p-3 mb-4 shadow-sm">
+        <h5>Profile {{ i + 1 }}</h5>
 
-</head>
+        <div class="row g-3">
+          <!-- First Name -->
+          <div class="col-md-6">
+            <label>First Name</label>
+            <input type="text" class="form-control" formControlName="firstName" />
+            <div *ngIf="group.get('firstName')?.invalid && group.get('firstName')?.touched"
+                 class="text-danger small mt-1">
+              <span *ngIf="group.get('firstName')?.errors?.['required']">First name is required.</span>
+              <span *ngIf="group.get('firstName')?.errors?.['pattern']">Only letters are allowed.</span>
+            </div>
+          </div>
 
-<body>
-    <div class="container mt-5">
-        <h2 class="mb-4 text-center">Personal Information</h2>
+          <!-- Last Name -->
+          <div class="col-md-6">
+            <label>Last Name</label>
+            <input type="text" class="form-control" formControlName="lastName" />
+            <div *ngIf="group.get('lastName')?.invalid && group.get('lastName')?.touched"
+                 class="text-danger small mt-1">
+              <span *ngIf="group.get('lastName')?.errors?.['required']">Last name is required.</span>
+              <span *ngIf="group.get('lastName')?.errors?.['pattern']">Only letters are allowed.</span>
+            </div>
+          </div>
 
-        <form [formGroup]="profileForm" class="row g-3" (ngSubmit)="onSubmit()">
+          <!-- Email -->
+          <div class="col-md-6">
+            <label>Email</label>
+            <input type="email" class="form-control" formControlName="email" />
+            <div *ngIf="group.get('email')?.invalid && group.get('email')?.touched"
+                 class="text-danger small mt-1">
+              <span *ngIf="group.get('email')?.errors?.['required']">Email is required.</span>
+              <span *ngIf="group.get('email')?.errors?.['pattern']">Enter a valid email address.</span>
+            </div>
+          </div>
+
+          <!-- Phone -->
+          <div class="col-md-6">
+            <label>Phone</label>
+            <input type="text" class="form-control" formControlName="phone" maxlength="10" />
+            <div *ngIf="group.get('phone')?.invalid && group.get('phone')?.touched"
+                 class="text-danger small mt-1">
+              <span *ngIf="group.get('phone')?.errors?.['required']">Phone number is required.</span>
+              <span *ngIf="group.get('phone')?.errors?.['pattern']">Enter a 10-digit number.</span>
+            </div>
+          </div>
+
+          <!-- Profile Image -->
+          <div class="col-md-6">
+            <label>Profile Image</label>
+            <input type="file" class="form-control" (change)="onFileSelected($event, i)" />
+            <img *ngIf="group.value.previewUrl"
+                 [src]="group.value.previewUrl"
+                 width="100" class="mt-2 rounded-circle border" />
+          </div>
+
+          <!-- Address -->
+          <div formGroupName="address" class="row g-2 mt-2">
             <div class="col-md-6">
-                <label for="txtfirstname" class="form-label">First Name</label>
-                <input type="text" id="txtfirstname" class="form-control" formControlName="firstName" />
+              <label>Street</label>
+              <input class="form-control" placeholder="Street" formControlName="street" />
             </div>
-
             <div class="col-md-6">
-                <label for="txtlastname" class="form-label">Last Name</label>
-                <input type="text" id="txtlastname" class="form-control" formControlName="lastName" />
+              <label>City</label>
+              <input class="form-control" placeholder="City" formControlName="city" />
             </div>
-
-            <div class="col-md-6" >
-                <label for="txtemail" class="form-label">Email</label>
-                <input type="email" id="txtemail" class="form-control" formControlName="email" />
-            </div>
-
-
             <div class="col-md-6">
-                <label for="txtphone" class="form-label">Phone</label>
-                <input type="phone" id="txtphone" class="form-control" formControlName="phone" maxlength="10" />
+              <label>State</label>
+              <input class="form-control" placeholder="State" formControlName="state" />
             </div>
-
-            <div class="col-6">
-                <label for="userimage" class="form-label">Upload User Image</label>
-                <input type="file" class="form-control" id="userimage" accept="image/*" formControlName="userImage" (change)="onFileSelected($event)">
+            <div class="col-md-6">
+              <label>ZIP</label>
+              <input class="form-control" placeholder="ZIP" formControlName="zip" />
             </div>
+          </div>
 
-            <div class="col-12 mt-3">
-                <img *ngIf="previewUrl" [src]="previewUrl" alt="Preview" style="max-width:200px; border-radius:8px;">
+          <!-- Skills -->
+          <div class="col-md-12 mt-3">
+            <label>Skills</label>
+            <div formArrayName="skills">
+              <div *ngFor="let skill of getSkills(group).controls; let j = index"
+                   class="input-group mb-2">
+                <input type="text"
+                       class="form-control"
+                       [formControlName]="j"
+                       placeholder="Skill {{ j + 1 }}" />
+                <button class="btn btn-outline-danger" type="button" (click)="removeSkill(i, j)">Remove</button>
+              </div>
+              <button class="btn btn-outline-primary btn-sm mt-1" type="button" (click)="addSkill(i)">+ Add Skill</button>
             </div>
-
-
-            <div formGroupName="address" class="row g-3">
-                <div class="col-md-6">
-                    <label for="txtstreet" class="form-label">Street</label>
-                    <input type="text" id="txtstreet" class="form-control" formControlName="street" />
-                </div>
-
-                <div class="col-md-6">
-                    <label for="txtcity" class="form-label">city</label>
-                    <input type="text" id="txtcity" class="form-control" formControlName="city" />
-                </div>
-
-                <div class="col-md-6">
-                    <label for="txtstate" class="form-label">State</label>
-                    <input type="text" id="txtstate" class="form-control" formControlName="state" />
-                </div>
-
-                <div class="col-md-6">
-                    <label for="txtzip" class="form-label">Zip</label>
-                    <input type="phone" id="txtzip" class="form-control" formControlName="zip" maxlength="6" />
-                </div>
-            </div>
-
-            <div class="col-12 text-center">
-                <button type="submit" class="btn btn-primary" [disabled]="!profileForm.valid" class=" btn btn-primary w-100">Save</button>
-            </div>
-        </form>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <!-- // to show all users -->
-     <div class="mt-5" *ngIf="users.length > 0">
-        <h4>Saved Users</h4>
-        <table class="table table-bordered">
-            <thead>
+    <div class="d-flex justify-content-between">
+      <button class="btn btn-primary" type="button" (click)="addFormGroup()">+ Add More</button>
+      <button class="btn btn-success" type="submit">Save All</button>
+    </div>
+  </form>
+</div>
+
+<!-- Saved Users Table -->
+<div class="mt-4">
+  <h2>Saved Users</h2>
+  <table class="table table-bordered table-striped">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>First</th>
+        <th>Last</th>
+        <th>Email</th>
+        <th>Phone</th>
+        <th>User Image</th>
+        <th>Street</th>
+        <th>City</th>
+        <th>State</th>
+        <th>Zip</th>
+        <th>Skills</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let user of users; index as i">
+        <td>{{ i + 1 }}</td>
+        <td>{{ user.firstName }}</td>
+        <td>{{ user.lastName }}</td>
+        <td>{{ user.email }}</td>
+        <td>{{ user.phone }}</td>
+        <td>
+          <img *ngIf="user.previewUrl" [src]="user.previewUrl"
+               style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover;" />
+        </td>
+        <td>{{ user.address.street }}</td>
+        <td>{{ user.address.city }}</td>
+        <td>{{ user.address.state }}</td>
+        <td>{{ user.address.zip }}</td>
+        <td>
+          <ul>
+            <li *ngFor="let s of user.skills">{{ s }}</li>
+          </ul>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- <div class="container mt-5">
+    <h2 class="mb-4 text-center">Personal Information</h2>
+
+    <form [formGroup]="profileForm" class="row g-3" (ngSubmit)="onSubmit()">
+        <div class="col-md-6">
+            <label for="txtfirstname" class="form-label">First Name</label>
+            <input type="text" id="txtfirstname" class="form-control" formControlName="firstName" />
+        </div>
+
+        <div class="col-md-6">
+            <label for="txtlastname" class="form-label">Last Name</label>
+            <input type="text" id="txtlastname" class="form-control" formControlName="lastName" />
+        </div>
+
+        <div class="col-md-6">
+            <label for="txtemail" class="form-label">Email</label>
+            <input type="email" id="txtemail" class="form-control" formControlName="email" />
+        </div>
+
+        <div class="col-md-6">
+            <label for="txtphone" class="form-label">Phone</label>
+            <input type="text" id="txtphone" class="form-control" formControlName="phone" maxlength="10" />
+        </div>
+
+
+        <div class="col-6">
+            <label for="userimage" class="form-label">Upload User Image</label>
+            <input type="file" class="form-control" id="userimage" accept="image/*" (change)="onFileSelected($event)">
+        </div>
+
+        <div class="col-12 mt-3 text-center">
+            <img *ngIf="previewUrl" [src]="previewUrl" alt="Preview" style="max-width:200px; border-radius:8px;">
+        </div>
+
+        <div formGroupName="address" class="row g-3">
+            <div class="col-md-6">
+                <label for="txtstreet" class="form-label">Street</label>
+                <input type="text" id="txtstreet" class="form-control" formControlName="street" />
+            </div>
+
+            <div class="col-md-6">
+                <label for="txtcity" class="form-label">City</label>
+                <input type="text" id="txtcity" class="form-control" formControlName="city" />
+            </div>
+
+            <div class="col-md-6">
+                <label for="txtstate" class="form-label">State</label>
+                <input type="text" id="txtstate" class="form-control" formControlName="state" />
+            </div>
+
+            <div class="col-md-6">
+                <label for="txtzip" class="form-label">Zip</label>
+                <input type="text" id="txtzip" class="form-control" formControlName="zip" maxlength="6" />
+            </div>
+        </div>
+
+
+        <div formArrayName="skills" class="col-md-12">
+            <label class="form-label">Skills</label>
+
+            <div *ngFor="let skill of skills.controls; let i = index" class="mb-2">
+                <input class="form-control" [formControlName]="i" placeholder="Enter skill" />
+            </div>
+        </div>
+
+         <div class="col-md-6 text-center mt-4">
+      <button type="submit" class="btn btn-success w-100" [disabled]="!profileForm.valid">Save</button>
+    </div>
+    <div class="col-md-6 text-center mt-4">
+      <button type="button" class="btn btn-primary w-100">Add User</button>
+    </div>
+    </form>
+</div> -->
+
+<!-- Saved Users -->
+<!-- <div class="mt-5" *ngIf="users.length > 0">
+    <h4>Saved Users</h4>
+    <table class="table table-bordered table-striped">
+        <thead>
             <tr>
                 <th>#</th>
-                <th>First Name</th>
-                <th>Last Name</th>
+                <th>First</th>
+                <th>Last</th>
                 <th>Email</th>
                 <th>Phone</th>
                 <th>User Image</th>
@@ -89,10 +283,10 @@
                 <th>City</th>
                 <th>State</th>
                 <th>Zip</th>
+                <th>Skills</th>
             </tr>
-            </thead>
-
-            <tbody>
+        </thead>
+        <tbody>
             <tr *ngFor="let user of users; index as i">
                 <td>{{ i + 1 }}</td>
                 <td>{{ user.firstName }}</td>
@@ -100,22 +294,19 @@
                 <td>{{ user.email }}</td>
                 <td>{{ user.phone }}</td>
                 <td>
-                <img
-                    *ngIf="user.userImage"
-                    [src]="user.userImage"
-                    alt="User Image"
-                    style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover;"
-                />
+                    <img *ngIf="user.userImage" [src]="user.userImage" alt="User Image"
+                        style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover;" />
                 </td>
-                <td>{{ user.street }}</td>
-                <td>{{ user.city }}</td>
-                <td>{{ user.state }}</td>
-                <td>{{ user.zip }}</td>
+                <td>{{ user.address.street }}</td>
+                <td>{{ user.address.city }}</td>
+                <td>{{ user.address.state }}</td>
+                <td>{{ user.address.zip }}</td>
+                <td>
+                    <ul>
+                        <li *ngFor="let s of user.skills">{{ s }}</li>
+                    </ul>
+                </td>
             </tr>
-            </tbody>
-        </table>
-    </div>
-
-</body>
-
-</html>
+        </tbody>
+    </table>
+</div> -->

@@ -44,6 +44,6 @@ export class Userdetails implements OnInit {
   }
 
   getbacktouserdata() {
-    this.router.navigate(['/usersdata']);
+    this.router.navigate(['/newusers']);
   }
 }

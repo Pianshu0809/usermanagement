@@ -8,20 +8,7 @@ import { Countapp } from '../service/countapp';
   styleUrl: './counter.css'
 })
 export class Counter {
-  // count =0 
 
-   // Increment(){
-  //   this.count++
-  // }
-  // Decrement(){
-  //   this.count--
-  // }
-  // Reset(){
-  //   this.count=0;
-  // }
-
-
-  // simple service - based state management
   count: number = 0;
 
   constructor(private counterService: Countapp) {}

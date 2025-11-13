@@ -10,7 +10,7 @@ import { CommonModule } from '@angular/common';
 })
 export class Paginationuser implements OnChanges {
   @Input() totalItems = 0;
-  @Input() itemsPerPage = 5;
+  @Input() itemsPerPage = 25;
   @Input() currentPage = 1;
   @Output() pageChange = new EventEmitter<number>();
 

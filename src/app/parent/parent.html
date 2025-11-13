@@ -1,0 +1,13 @@
+<h1>Parent Component</h1>
+
+<app-child
+  [parentMessage]="messageForChild"
+  (event)="handleChildEvent($event)">
+</app-child>
+
+<p>Message from child: {{ messageFromChild }}</p>
+
+
+<p>Parent Component</p>
+<app-child></app-child>
+<button (click)="callChild()">call method</button>

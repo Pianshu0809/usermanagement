@@ -1,0 +1,11 @@
+<h1> Pipe </h1>
+<main>
+<p>Purchases from {{ company | titlecase | uppercase }} on {{ purchasedOn | date }}</p>
+<p>Total: {{ amount | currency }}</p>
+</main>
+
+
+<h2>Template Reference Variable Demo</h2>
+<input #username placeholder="Enter name">
+<button (click)="show(username.value)">Show</button>
+<p *ngIf="output">You typed: {{ output }}</p>
