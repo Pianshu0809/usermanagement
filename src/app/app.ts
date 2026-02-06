@@ -13,7 +13,7 @@ import { Dataservice } from './service/dataservice';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, RouterLink,ReactiveFormsModule],
+  imports: [RouterOutlet,ReactiveFormsModule],
   templateUrl: './app.html',
   styleUrl: './app.css',
 }) 

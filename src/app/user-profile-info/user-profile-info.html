@@ -1,0 +1,77 @@
+<div class="text-center mt-3">
+    <h1>Profile Information</h1>
+    <!-- <img src="../../assets/images/download.png" alt="" srcset="" style="height: 100px; width: 100px;" class="text-center"> -->
+
+
+    <div *ngIf="datainfo$ | async as data">
+        <img src="../../assets/images/download.png" alt="" srcset="" style="height: 100px; width: 100px;"
+            class="text-center">
+        <div class="">
+            <div class="row">
+                <div class="col-md-6">
+                    <h4>First Name:</h4>
+
+                </div>
+                <div class="col-md-6">
+                    <h5>{{data?.fname}}</h5>
+                </div>
+            </div>
+            <!-- <div class="row">
+            <div class="col-md-6">
+                <h5>First Name:</h5>
+                
+            </div>
+            <div class="col-md-6">
+                    <h5>{{data?.fname}}</h5>
+                </div>
+            </div> -->
+            <div class="row">
+                <div class="col-md-6">
+                    <h4>Last Name:</h4>
+
+                </div>
+                <div class="col-md-6">
+                    <h5>{{data?.lname}}</h5>
+                </div>
+            </div>
+            <div class="row d-flex justify-content-start">
+                <div class="col-md-6">
+                    <h4>E-Mail:</h4>
+
+                </div>
+                <div class="col-md-6">
+                    <h5>{{data?.email}}</h5>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <h4>Phone Number:</h4>
+
+                </div>
+                <div class="col-md-6">
+                    <h5>{{ data?.phone}}</h5>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <h4>Description:</h4>
+
+                </div>
+                <div class="col-md-6">
+                    <h5><span class="badge text-bg-secondary">{{ data?.description}}</span></h5>
+
+                </div>
+            </div>
+        </div>
+        <!-- <div class="col-md-6">
+            <h5>Last Name: {{ data?.lname}}</h5>
+        </div>
+        <div class="col-md-6">
+            <h5>E-mail: {{ data?.email}}</h5>
+        </div>
+        <div class="col-md-6">
+            <h5>Phone Number: </h5>
+        </div> -->
+
+    </div>
+</div>

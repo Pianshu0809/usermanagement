@@ -1,87 +1,81 @@
-import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-login',
-  imports: [FormsModule, CommonModule],
-  // standalone: false,
+  standalone: true,
+  imports: [CommonModule, ReactiveFormsModule, FormsModule],
   templateUrl: './login.html',
   styleUrls: ['./login.css']
 })
-export class Login {
-  username: string = '';
-  password: string = '';
-
-  usernameMessage: string = '';
-  passwordMessage: string = '';
-
-  isUsernameValid: boolean = false;
-  isPasswordValid: boolean = false;
+export class Login implements OnInit {
 
 
+  user = new FormGroup({
+    email: new FormControl('', [
+      Validators.required,
+      Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/)
+    ]),
+    password: new FormControl('', [
+      Validators.required,
+      Validators.pattern('^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%^&*])[A-Za-z0-9!@#$%^&*]{8,15}$')
+    ]),
+    rememberMe: new FormControl(false)
+  });
 
-  usernameValidation = /^[A-Za-z]{3,}$/;
-  passwordValidation = /^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%^&*])[A-Za-z0-9!@#$%^&*]{8,15}$/;
-
-  validateUsername(){
-    if(this.usernameValidation.test(this.username)){
-      this.usernameMessage="valid";
-      this.isUsernameValid = true;
-    }else{
-      this.usernameMessage="Invalid (only letters, 3–15 chars)";
-      this.isUsernameValid = false;
-    }
-  }
-
-  validatePassword(){
-    if(this.passwordValidation.test(this.password)){
-      this.passwordMessage="valid";
-      this.isPasswordValid = true;
-    }else{
-      this.passwordMessage="Invalid (8–15 chars, must include A-Z, a-z, 0-9 & special)";
-      this.isPasswordValid = false;
-    }
-  }
+  submitted = false;
+  showPassword = false;
 
   constructor(private router: Router) {}
+
+  ngOnInit() {
+  const savedEmail = sessionStorage.getItem('email');
+  const savedPassword = sessionStorage.getItem('password');
+
+  if (savedEmail || savedPassword) {
+    this.user.patchValue({
+      email: savedEmail,
+      rememberMe: true
+    });
+  }
+}
+
+
+  get email() {
+    return this.user.get('email');
+  }
+
+  get password() {
+    return this.user.get('password');
+  }
+
+  togglePassword() {
+    this.showPassword = !this.showPassword;
+  }
+
   onSubmit() {
-      if (!this.username && !this.password) {
-        alert('Please fill username and password');
-        return;
-      }
-      if (!this.username) {
-        alert('Please fill username');
-        return;
-      }
-      if (!this.password) {
-        alert('Please fill password');
-        return;
-      }
+  this.submitted = true;
 
-      this.validateUsername();
-      this.validatePassword();
+  if (this.user.invalid) return;
 
-      if (this.usernameValidation.test(this.username) && this.passwordValidation.test(this.password)) {
-        const userData = {
-          username: this.username,
-          password: this.password
-        };
+  const remember = this.user.value.rememberMe;
 
-        // Save the object as a string in localStorage
-        localStorage.setItem('user', JSON.stringify(userData));
+  if (remember) {
+    sessionStorage.setItem('email', this.user.value.email!);
+    sessionStorage.setItem('password', this.user.value.password!);
+  } else {
+    sessionStorage.removeItem('email');
+    sessionStorage.removeItem('password');
+  }
 
-        //    localStorage.setItem('username', this.username);
-        //     localStorage.setItem('password', this.password); 
-        // alert(`Login successful!\nUsername: ${this.username}\nPassword: ${this.password}`);
-        
-        // navigation 
-        this.router.navigate(['/profileinformation']);
-      } else {
-        alert('Please enter valid username and password!');
-      }
-    }
+  this.router.navigate(['/profileinformation']);
+}
 
 
 }
+
+
+

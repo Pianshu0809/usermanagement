@@ -1,4 +1,5 @@
 <div class="container mt-4">
+  <button (click)="onLogout()">Logout</button>
   <h2 class="text-center mb-3">Profile Information</h2>
 
   <form [formGroup]="profileForm" (ngSubmit)="onSaveAll()">
@@ -111,25 +112,25 @@
 <!-- Saved Users Table -->
 <div class="mt-4">
   <h2>Saved Users</h2>
-  <table class="table table-bordered table-striped">
+  <table class="table table-success table-bordered table-hover">
     <thead>
       <tr>
-        <th>#</th>
-        <th>First</th>
-        <th>Last</th>
-        <th>Email</th>
-        <th>Phone</th>
-        <th>User Image</th>
-        <th>Street</th>
-        <th>City</th>
-        <th>State</th>
-        <th>Zip</th>
-        <th>Skills</th>
+        <th scope="col">#</th>
+        <th  scope="col">First</th>
+        <th scope="col">Last</th>
+        <th scope="col">Email</th>
+        <th scope="col">Phone</th>
+        <th scope="col">User Image</th>
+        <th scope="col">Street</th>
+        <th scope="col">City</th>
+        <th scope="col">State</th>
+        <th scope="col">Zip</th>
+        <th scope="col">Skills</th>
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let user of users; index as i">
-        <td>{{ i + 1 }}</td>
+        <td scope="row">{{ i + 1 }}</td>
         <td>{{ user.firstName }}</td>
         <td>{{ user.lastName }}</td>
         <td>{{ user.email }}</td>

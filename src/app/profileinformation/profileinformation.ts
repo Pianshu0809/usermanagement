@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray,Validators,ReactiveFormsModule,} from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Userinfomation } from '../service/userinfomation';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-profileinformation',
@@ -14,7 +15,7 @@ export class Profileinformation implements OnInit {
   profileForm!: FormGroup;
   users: any[] =[]
 
-  constructor(private fb: FormBuilder, private userService: Userinfomation) {}
+  constructor(private fb: FormBuilder, private userService: Userinfomation, private render:Router) {}
 
   ngOnInit(): void {
     this.profileForm = this.fb.group({
@@ -88,33 +89,16 @@ export class Profileinformation implements OnInit {
     }
   }
 
-  // onSaveAll(): void {
-  //   if (this.profileForm.valid) {
-  //     const data = this.profileForm.value.profiles;
-  //     this.userService.setUser(data);
-  //     localStorage.setItem('profiles', JSON.stringify(data));
-  //     alert('✅ All profiles saved successfully!');
-  //     console.log('Saved data:', data);
-  //   } else {
-  //     alert('⚠️ Please fill all required fields before saving.');
-  //     this.profileForm.markAllAsTouched();
-  //   }
-  // }
   onSaveAll(): void {
   if (this.profileForm.valid) {
     const newProfiles = this.profileForm.value.profiles;
 
-    // Step 1: Get existing profiles from localStorage
     const existingData = localStorage.getItem('profiles');
     let profiles = existingData ? JSON.parse(existingData) : [];
 
-    // Step 2: Merge existing + new data
     profiles = [...profiles, ...newProfiles];
 
-    // Step 3: Save updated array back to localStorage
     localStorage.setItem('profiles', JSON.stringify(profiles));
-
-    // Step 4: Optional - update users array for immediate UI reflection
     this.users = profiles;
 
     alert('✅ Profiles added successfully!');
@@ -123,7 +107,15 @@ export class Profileinformation implements OnInit {
     alert('⚠️ Please fill all required fields before saving.');
     this.profileForm.markAllAsTouched();
   }
+  
 }
+
+onLogout(){
+    this.render.navigate(['/login']);
+
+  }
+
+
 
 }
 
