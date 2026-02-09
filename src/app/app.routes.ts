@@ -14,6 +14,7 @@ import { UserProfileData } from './user-profile-data/user-profile-data';
 import { UserProfileInfo } from './user-profile-info/user-profile-info';
 import { UserPersonMain } from './user-person-main/user-person-main';
 import { NewLearningTwcss } from './new-learning-twcss/new-learning-twcss';
+import { Dummydata } from './dummydata/dummydata';
 
 
 export const routes: Routes = [
@@ -33,5 +34,6 @@ export const routes: Routes = [
   {path: 'user-profile-info', component: UserProfileInfo},
   {path: 'user-person-main',component:UserPersonMain},
   {path:'new-css',component: NewLearningTwcss},
+  {path:'dummy-data', component: Dummydata},
   { path: '**', redirectTo: 'login' } 
 ];
